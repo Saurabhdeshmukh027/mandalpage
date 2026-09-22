@@ -1,0 +1,68 @@
+import { Link } from 'react-router-dom';
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'var(--color-warm-paper)',
+    padding: 'var(--space-xl)',
+    textAlign: 'center',
+  },
+  inner: {
+    maxWidth: '420px',
+  },
+  eyebrow: {
+    fontFamily: 'var(--font-body)',
+    fontSize: 'var(--text-xs)',
+    fontWeight: 600,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: 'var(--color-text-subtle)',
+    marginBottom: 'var(--space-md)',
+  },
+  title: {
+    fontFamily: 'var(--font-heading)',
+    fontSize: 'var(--text-3xl)',
+    fontWeight: 400,
+    color: 'var(--color-ink)',
+    lineHeight: 1.15,
+    marginBottom: 'var(--space-md)',
+  },
+  description: {
+    fontSize: 'var(--text-base)',
+    color: 'var(--color-text-muted)',
+    lineHeight: 1.6,
+    marginBottom: 'var(--space-xl)',
+  },
+  slug: {
+    fontFamily: 'monospace',
+    fontSize: 'var(--text-sm)',
+    color: 'var(--color-sindoor)',
+    backgroundColor: 'rgba(122, 24, 48, 0.06)',
+    padding: '2px 8px',
+    borderRadius: 'var(--radius-sm)',
+  },
+};
+
+export default function MandalNotFound({ slug }) {
+  return (
+    <div style={styles.container}>
+      <div style={styles.inner}>
+        <p style={styles.eyebrow}>Mandal Not Found</p>
+        <h1 style={styles.title}>
+          We couldn't find this Mandal
+        </h1>
+        <p style={styles.description}>
+          The Mandal page{' '}
+          {slug && <code style={styles.slug}>/m/{slug}</code>}{' '}
+          does not exist yet. Please check the URL or explore our available Mandals.
+        </p>
+        <Link to="/" className="btn btn--primary">
+          ← Back to Home
+        </Link>
+      </div>
+    </div>
+  );
+}

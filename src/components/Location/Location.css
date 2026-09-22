@@ -1,0 +1,123 @@
+.location-section {
+  background-color: var(--color-warm-white);
+}
+
+.location__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.location__content {
+  text-align: center;
+}
+
+.location__eyebrow {
+  margin-bottom: var(--space-sm);
+}
+
+.location__title {
+  margin-bottom: var(--space-xl);
+}
+
+.location__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.location__detail {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+.location__detail-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: rgba(122, 24, 48, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-sindoor);
+}
+
+.location__detail-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.location__detail-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-subtle);
+  margin-bottom: 2px;
+}
+
+.location__detail-value {
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  line-height: 1.4;
+}
+
+.location__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* Visual panel for desktop */
+.location__visual {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-warm-paper);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  padding: var(--space-2xl);
+  min-height: 280px;
+}
+
+.location__visual-inner {
+  text-align: center;
+  color: var(--color-text-subtle);
+}
+
+.location__visual-icon {
+  color: var(--color-sindoor);
+  opacity: 0.3;
+  margin-bottom: var(--space-md);
+}
+
+.location__visual-text {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .location__inner {
+    grid-template-columns: 1fr 1fr;
+    max-width: none;
+    align-items: center;
+  }
+  .location__content {
+    text-align: left;
+  }
+  .location__actions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .location__visual {
+    display: flex;
+  }
+}

@@ -1,0 +1,218 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background-color: var(--color-sindoor-dark);
+}
+
+.hero__image-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  animation: heroScale 12s var(--ease-out) forwards;
+}
+
+@keyframes heroScale {
+  from {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(36, 31, 29, 0.82) 0%,
+    rgba(36, 31, 29, 0.5) 35%,
+    rgba(36, 31, 29, 0.18) 60%,
+    rgba(36, 31, 29, 0.08) 100%
+  );
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: var(--space-3xl) var(--container-padding) var(--space-2xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold-soft);
+  margin-bottom: var(--space-md);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroReveal 0.7s var(--ease-out) 0.3s forwards;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--color-white);
+  margin-bottom: var(--space-sm);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 0.7s var(--ease-out) 0.5s forwards;
+}
+
+.hero__title-marathi {
+  font-family: var(--font-devanagari);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--space-lg);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroReveal 0.7s var(--ease-out) 0.65s forwards;
+}
+
+.hero__location {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--space-sm);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroReveal 0.6s var(--ease-out) 0.8s forwards;
+}
+
+.hero__dates {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--color-white);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-sm);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroReveal 0.6s var(--ease-out) 0.9s forwards;
+}
+
+.hero__venue {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: var(--space-lg);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroReveal 0.6s var(--ease-out) 0.95s forwards;
+}
+
+.hero__tagline {
+  font-size: var(--text-sm);
+  color: var(--color-gold-pale);
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-xl);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroReveal 0.6s var(--ease-out) 1.0s forwards;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: heroReveal 0.6s var(--ease-out) 1.15s forwards;
+}
+
+@keyframes heroReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll indicator */
+.hero__scroll {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  opacity: 0;
+  animation: heroReveal 0.6s var(--ease-out) 1.5s forwards;
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.5; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .hero__content {
+    padding-bottom: var(--space-4xl);
+    max-width: 680px;
+    margin: 0;
+    margin-left: max(var(--container-padding), calc((100vw - var(--container-max)) / 2 + var(--container-padding)));
+  }
+
+  .hero__title {
+    font-size: var(--text-5xl);
+  }
+
+  .hero__title-marathi {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero__image {
+    animation: none;
+    opacity: 1;
+  }
+  .hero__eyebrow,
+  .hero__title,
+  .hero__title-marathi,
+  .hero__location,
+  .hero__dates,
+  .hero__venue,
+  .hero__tagline,
+  .hero__actions,
+  .hero__scroll {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero__scroll-line {
+    animation: none;
+  }
+}

@@ -1,0 +1,102 @@
+.about {
+  background-color: var(--color-warm-white);
+}
+
+.about__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.about__image-wrapper {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.about__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 8s var(--ease-out);
+}
+
+.about__image-wrapper:hover .about__image {
+  transform: scale(1.03);
+}
+
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.about__eyebrow {
+  margin-bottom: 0;
+}
+
+.about__title {
+  line-height: 1.15;
+}
+
+.about__description {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.about__description-marathi {
+  font-family: var(--font-devanagari);
+  font-size: var(--text-base);
+  color: var(--color-text-subtle);
+  line-height: 1.8;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.about__stats {
+  display: flex;
+  gap: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border-soft);
+  margin-top: var(--space-sm);
+}
+
+.about__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.about__stat-value {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-sindoor);
+}
+
+.about__stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (min-width: 768px) {
+  .about__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3xl);
+    align-items: center;
+  }
+
+  .about__image-wrapper {
+    aspect-ratio: 3 / 4;
+    max-height: 520px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about__inner {
+    gap: var(--space-4xl);
+  }
+}
