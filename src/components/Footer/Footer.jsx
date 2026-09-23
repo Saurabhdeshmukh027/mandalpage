@@ -1,20 +1,27 @@
 import { useMandal } from '../../context/MandalContext';
+import { useLanguage } from '../../hooks/useLanguage';
 import { formatDateRange } from '../../utils/dateUtils';
 import './Footer.css';
 
-const NAV_ITEMS = [
-  { label: 'Schedule', href: '#schedule' },
-  { label: 'About', href: '#about' },
-  { label: 'Sponsors', href: '#sponsors' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Location', href: '#location' },
-  { label: 'Share', href: '#share' },
-];
-
 export default function Footer() {
   const { identity, festival, location, contact, social } = useMandal();
+  const { t, getLocalized } = useLanguage();
   const dateRange = formatDateRange(festival.startDate, festival.endDate);
-  const initials = identity.nameMarathi ? identity.nameMarathi.slice(0, 2) : identity.name.slice(0, 2);
+
+  const mandalName = getLocalized(identity.name);
+  const tagline = getLocalized(identity.tagline);
+  const festivalName = getLocalized(festival.name);
+  const address = getLocalized(location.address);
+  const initials = mandalName ? mandalName.slice(0, 2) : 'मं';
+
+  const navItems = [
+    { label: t('schedule'), href: '#schedule' },
+    { label: t('ourStory'), href: '#about' },
+    { label: t('sponsors'), href: '#sponsors' },
+    { label: t('gallery'), href: '#gallery' },
+    { label: t('location'), href: '#location' },
+    { label: t('share'), href: '#share' },
+  ];
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -32,13 +39,13 @@ export default function Footer() {
           <div className="footer__brand">
             <div className="footer__brand-identity">
               <span className="footer__brand-icon" aria-hidden="true">{initials}</span>
-              <span className="footer__brand-name">{identity.name}</span>
+              <span className="footer__brand-name">{mandalName}</span>
             </div>
             <p className="footer__brand-description">
-              {identity.tagline}
+              {tagline}
             </p>
             <p className="footer__brand-description" style={{ fontSize: 'var(--text-xs)', opacity: 0.7 }}>
-              {festival.name} • {dateRange}
+              {festivalName} • {dateRange}
             </p>
 
             {/* Social */}
@@ -71,8 +78,8 @@ export default function Footer() {
 
           {/* Nav */}
           <nav className="footer__nav" aria-label="Footer navigation">
-            <p className="footer__nav-title">Quick Links</p>
-            {NAV_ITEMS.map(item => (
+            <p className="footer__nav-title">{t('home')}</p>
+            {navItems.map(item => (
               <a
                 key={item.href}
                 href={item.href}
@@ -86,13 +93,13 @@ export default function Footer() {
 
           {/* Info */}
           <div className="footer__info">
-            <p className="footer__nav-title">Contact</p>
+            <p className="footer__nav-title">{t('location')}</p>
 
             <div className="footer__info-item">
               <svg className="footer__info-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
-              <span>{location.address}</span>
+              <span>{address}</span>
             </div>
 
             {contact?.phone && (
@@ -118,10 +125,10 @@ export default function Footer() {
         {/* Bottom */}
         <div className="footer__bottom">
           <p className="footer__powered">
-            Powered by <span className="footer__powered-brand">E-PavtiBook</span>
+            {t('poweredBy')} <span className="footer__powered-brand">E-PavtiBook</span>
           </p>
           <p className="footer__copyright">
-            © {new Date().getFullYear()} {identity.name}. All rights reserved.
+            © {new Date().getFullYear()} {mandalName}. {t('allRightsReserved')}.
           </p>
         </div>
       </div>

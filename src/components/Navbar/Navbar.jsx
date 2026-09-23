@@ -1,23 +1,27 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useMandal } from '../../context/MandalContext';
+import { useLanguage } from '../../hooks/useLanguage';
 import { useScrollLock } from '../../hooks/useScrollLock';
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Navbar.css';
-
-const NAV_ITEMS = [
-  { label: 'Schedule', href: '#schedule' },
-  { label: 'About', href: '#about' },
-  { label: 'Sponsors', href: '#sponsors' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Location', href: '#location' },
-];
 
 export default function Navbar() {
   const { identity } = useMandal();
+  const { t, getLocalized } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { lockScroll, unlockScroll } = useScrollLock();
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
+
+  // Dynamic nav items based on active language
+  const navItems = [
+    { label: t('schedule'), href: '#schedule' },
+    { label: t('ourStory'), href: '#about' },
+    { label: t('sponsors'), href: '#sponsors' },
+    { label: t('gallery'), href: '#gallery' },
+    { label: t('location'), href: '#location' },
+  ];
 
   // Scroll detection
   useEffect(() => {
@@ -80,8 +84,8 @@ export default function Navbar() {
     }
   };
 
-  // Get first two letters for brand icon
-  const initials = identity.nameMarathi ? identity.nameMarathi.slice(0, 2) : identity.name.slice(0, 2);
+  const mandalName = getLocalized(identity.name);
+  const initials = mandalName ? mandalName.slice(0, 2) : 'मं';
 
   const navClass = [
     'navbar',
@@ -94,12 +98,12 @@ export default function Navbar() {
         {/* Brand */}
         <a href="#hero" className="navbar__brand" onClick={(e) => handleNavClick(e, '#hero')}>
           <span className="navbar__brand-icon" aria-hidden="true">{initials}</span>
-          <span className="navbar__brand-name">{identity.name}</span>
+          <span className="navbar__brand-name">{mandalName}</span>
         </a>
 
         {/* Desktop Links */}
         <ul className="navbar__links">
-          {NAV_ITEMS.map(item => (
+          {navItems.map(item => (
             <li key={item.href}>
               <a
                 href={item.href}
@@ -112,30 +116,36 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <a
-          href="#share"
-          className="navbar__cta btn btn--primary btn--sm"
-          onClick={(e) => handleNavClick(e, '#share')}
-        >
-          Share Mandal
-        </a>
+        {/* Desktop Actions */}
+        <div className="navbar__actions">
+          <LanguageSwitcher isHero={!scrolled} />
+          <a
+            href="#share"
+            className="navbar__cta btn btn--primary btn--sm"
+            onClick={(e) => handleNavClick(e, '#share')}
+          >
+            {t('share')}
+          </a>
+        </div>
 
-        {/* Hamburger */}
-        <button
-          ref={hamburgerRef}
-          className="navbar__hamburger"
-          onClick={toggleMenu}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-        >
-          <span className="navbar__hamburger-icon" aria-hidden="true">
-            <span className="navbar__hamburger-line"></span>
-            <span className="navbar__hamburger-line"></span>
-            <span className="navbar__hamburger-line"></span>
-          </span>
-        </button>
+        {/* Mobile Header Actions */}
+        <div className="navbar__mobile-actions">
+          <LanguageSwitcher isHero={!scrolled} />
+          <button
+            ref={hamburgerRef}
+            className="navbar__hamburger"
+            onClick={toggleMenu}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? t('closeMenu', 'Close menu') : t('openMenu', 'Open menu')}
+          >
+            <span className="navbar__hamburger-icon" aria-hidden="true">
+              <span className="navbar__hamburger-line"></span>
+              <span className="navbar__hamburger-line"></span>
+              <span className="navbar__hamburger-line"></span>
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -146,7 +156,7 @@ export default function Navbar() {
         aria-hidden={!menuOpen}
       >
         <ul className="navbar__mobile-links">
-          {NAV_ITEMS.map(item => (
+          {navItems.map(item => (
             <li key={item.href}>
               <a
                 href={item.href}
@@ -166,7 +176,7 @@ export default function Navbar() {
             onClick={(e) => handleNavClick(e, '#share')}
             tabIndex={menuOpen ? 0 : -1}
           >
-            Share Mandal
+            {t('share')}
           </a>
         </div>
       </div>

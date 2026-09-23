@@ -1,21 +1,21 @@
 /**
  * E-PavtiBook — Mandal Type Definitions (JSDoc)
  *
- * These types define the data shape for Mandal pages.
- * When a backend is added, the API should return data matching these shapes.
+ * These types define the data shape for Mandal pages with genuine multilingual support.
+ * Supports Marathi (mr), Hindi (hi), and English (en).
  */
 
 /**
  * @typedef {Object} MandalIdentity
- * @property {string} name - English name
- * @property {string} nameMarathi - Marathi/Devanagari name
+ * @property {string | import('./language.js').LocalizedText} name - Mandal name (multilingual or string)
+ * @property {string} [nameMarathi] - Legacy fallback for Marathi name
  * @property {string} slug - URL slug
- * @property {string} tagline - Short English tagline
- * @property {string} [taglineMarathi] - Marathi tagline
+ * @property {string | import('./language.js').LocalizedText} tagline - Tagline (multilingual or string)
+ * @property {string} [taglineMarathi] - Legacy fallback for Marathi tagline
  * @property {number} [established] - Year established
- * @property {string} [communitySize] - e.g. "200+ Families"
- * @property {string} [description] - Long English description
- * @property {string} [descriptionMarathi] - Long Marathi description
+ * @property {string | import('./language.js').LocalizedText} [communitySize] - e.g. "250+ Families"
+ * @property {string | import('./language.js').LocalizedText} [description] - Description (multilingual or string)
+ * @property {string} [descriptionMarathi] - Legacy fallback for Marathi description
  * @property {string} [logoUrl] - Logo image URL
  * @property {string} [heroImageUrl] - Hero background image
  * @property {string} [aboutImageUrl] - About section image
@@ -23,8 +23,8 @@
 
 /**
  * @typedef {Object} Festival
- * @property {string} name - e.g. "Navratri 2026"
- * @property {string} nameMarathi - e.g. "नवरात्री २०२६"
+ * @property {string | import('./language.js').LocalizedText} name - e.g. "Navratri 2026"
+ * @property {string} [nameMarathi] - Legacy fallback for Marathi festival name
  * @property {string} startDate - ISO date string (YYYY-MM-DD)
  * @property {string} endDate - ISO date string (YYYY-MM-DD)
  * @property {string} [dussehraDate] - ISO date string
@@ -33,12 +33,12 @@
 
 /**
  * @typedef {Object} ScheduleEvent
- * @property {string} title - English event title
- * @property {string} titleMarathi - Marathi event title
+ * @property {string | import('./language.js').LocalizedText} title - Event title (multilingual or string)
+ * @property {string} [titleMarathi] - Legacy fallback for Marathi title
  * @property {string} time - Time string, e.g. "07:00 AM"
  * @property {string} [endTime] - End time
- * @property {string} venue - Venue name
- * @property {string} [description] - Event description
+ * @property {string | import('./language.js').LocalizedText} [venue] - Venue name
+ * @property {string | import('./language.js').LocalizedText} [description] - Event description
  * @property {string} [eventType] - e.g. "Aarti", "Cultural", "Pooja"
  */
 
@@ -46,8 +46,8 @@
  * @typedef {Object} ScheduleDay
  * @property {number} day - Day number (1-9)
  * @property {string} date - ISO date string (YYYY-MM-DD)
- * @property {string} goddess - English goddess name
- * @property {string} goddessMarathi - Devanagari goddess name
+ * @property {string | import('./language.js').LocalizedText} goddess - Goddess name (multilingual or string)
+ * @property {string} [goddessMarathi] - Legacy fallback for Marathi goddess name
  * @property {string} color - Day color (for visual accent)
  * @property {string} colorHex - Hex color code for the day
  * @property {ScheduleEvent[]} events - Events for this day
@@ -56,9 +56,9 @@
 /**
  * @typedef {Object} Sponsor
  * @property {string} id - Unique identifier
- * @property {string} name - Sponsor/business name
+ * @property {string | import('./language.js').LocalizedText} name - Sponsor/business name
  * @property {string} tier - "gold" | "silver" | "community" | "festival" | "supporter"
- * @property {string} [description] - Short description
+ * @property {string | import('./language.js').LocalizedText} [description] - Short description
  * @property {string} [logoUrl] - Logo image URL
  * @property {string} [initials] - Fallback initials (2 chars)
  */
@@ -67,18 +67,18 @@
  * @typedef {Object} GalleryImage
  * @property {string} id - Unique identifier
  * @property {string} src - Image source URL
- * @property {string} alt - Alt text
- * @property {string} [caption] - Display caption
+ * @property {string | import('./language.js').LocalizedText} alt - Alt text
+ * @property {string | import('./language.js').LocalizedText} [caption] - Display caption
  * @property {boolean} [featured] - If true, displayed larger
  */
 
 /**
  * @typedef {Object} MandallLocation
- * @property {string} venue - Venue name
- * @property {string} address - Full address
- * @property {string} [landmark] - Nearby landmark
- * @property {string} [city] - City
- * @property {string} [state] - State
+ * @property {string | import('./language.js').LocalizedText} venue - Venue name
+ * @property {string | import('./language.js').LocalizedText} address - Full address
+ * @property {string | import('./language.js').LocalizedText} [landmark] - Nearby landmark
+ * @property {string | import('./language.js').LocalizedText} [city] - City
+ * @property {string | import('./language.js').LocalizedText} [state] - State
  * @property {string} [mapsUrl] - Google Maps URL
  * @property {number} [lat] - Latitude
  * @property {number} [lng] - Longitude

@@ -117,16 +117,31 @@
   color: var(--color-sindoor);
 }
 
-.navbar__cta {
+.navbar__actions {
   display: none;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.navbar__mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  z-index: calc(var(--z-overlay) + 1);
 }
 
 @media (min-width: 768px) {
   .navbar__links {
     display: flex;
   }
+  .navbar__actions {
+    display: flex;
+  }
   .navbar__cta {
     display: inline-flex;
+  }
+  .navbar__mobile-actions {
+    display: none;
   }
   .navbar__hamburger {
     display: none;

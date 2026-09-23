@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../hooks/useLanguage';
 
 const styles = {
   container: {
@@ -47,12 +48,14 @@ const styles = {
 };
 
 export default function MandalNotFound({ slug }) {
+  const { t } = useLanguage();
+
   return (
     <div style={styles.container}>
       <div style={styles.inner}>
-        <p style={styles.eyebrow}>Mandal Not Found</p>
+        <p style={styles.eyebrow}>404</p>
         <h1 style={styles.title}>
-          We couldn't find this Mandal
+          Mandal Not Found
         </h1>
         <p style={styles.description}>
           The Mandal page{' '}
@@ -60,7 +63,7 @@ export default function MandalNotFound({ slug }) {
           does not exist yet. Please check the URL or explore our available Mandals.
         </p>
         <Link to="/" className="btn btn--primary">
-          ← Back to Home
+          ← {t('home', 'Back to Home')}
         </Link>
       </div>
     </div>

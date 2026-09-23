@@ -1,20 +1,28 @@
 import { useMandal } from '../../context/MandalContext';
+import { useLanguage } from '../../hooks/useLanguage';
 import { useInView } from '../../hooks/useInView';
 import { formatDateRange } from '../../utils/dateUtils';
 import './Location.css';
 
 export default function Location() {
   const { location, festival } = useMandal();
+  const { t, getLocalized } = useLanguage();
   const [ref, isVisible] = useInView();
 
+  const venue = getLocalized(location.venue);
+  const address = getLocalized(location.address);
+  const landmark = getLocalized(location.landmark);
+  const city = getLocalized(location.city);
+  const state = getLocalized(location.state);
+
   return (
-    <section id="location" className="location-section section" aria-label="Location">
+    <section id="location" className="location-section section" aria-label={t('location')}>
       <div ref={ref} className={`container reveal ${isVisible ? 'reveal--visible' : ''}`}>
         <div className="location__inner">
           <div className="location__content">
-            <p className="eyebrow location__eyebrow">Visit Us</p>
+            <p className="eyebrow location__eyebrow">{t('visitUs')}</p>
             <h2 className="heading-display heading-display--lg location__title">
-              Come Celebrate With Us
+              {t('comeCelebrate')}
             </h2>
 
             <div className="location__details">
@@ -26,8 +34,8 @@ export default function Location() {
                   </svg>
                 </div>
                 <div className="location__detail-text">
-                  <p className="location__detail-label">Venue</p>
-                  <p className="location__detail-value">{location.venue}</p>
+                  <p className="location__detail-label">{t('venue')}</p>
+                  <p className="location__detail-value">{venue}</p>
                 </div>
               </div>
 
@@ -39,12 +47,12 @@ export default function Location() {
                   </svg>
                 </div>
                 <div className="location__detail-text">
-                  <p className="location__detail-label">Address</p>
-                  <p className="location__detail-value">{location.address}</p>
+                  <p className="location__detail-label">{t('address')}</p>
+                  <p className="location__detail-value">{address}</p>
                 </div>
               </div>
 
-              {location.landmark && (
+              {landmark && (
                 <div className="location__detail">
                   <div className="location__detail-icon" aria-hidden="true">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -54,8 +62,8 @@ export default function Location() {
                     </svg>
                   </div>
                   <div className="location__detail-text">
-                    <p className="location__detail-label">Landmark</p>
-                    <p className="location__detail-value">{location.landmark}</p>
+                    <p className="location__detail-label">{t('landmark')}</p>
+                    <p className="location__detail-value">{landmark}</p>
                   </div>
                 </div>
               )}
@@ -73,7 +81,7 @@ export default function Location() {
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
-                  Open in Google Maps
+                  {t('viewOnMaps')}
                 </a>
               )}
             </div>
@@ -88,9 +96,9 @@ export default function Location() {
                   <circle cx="12" cy="10" r="3" />
                 </svg>
               </div>
-              <p className="location__visual-text">{location.venue}</p>
+              <p className="location__visual-text">{venue}</p>
               <p style={{ fontSize: 'var(--text-sm)', marginTop: '4px', color: 'var(--color-text-subtle)' }}>
-                {location.city}, {location.state}
+                {city}, {state}
               </p>
               <p style={{ fontSize: 'var(--text-xs)', marginTop: 'var(--space-md)', color: 'var(--color-text-subtle)', opacity: 0.7 }}>
                 {formatDateRange(festival.startDate, festival.endDate)}

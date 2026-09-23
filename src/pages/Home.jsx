@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getAllMandals } from '../data/mandals';
+import { useLanguage } from '../hooks/useLanguage';
+import LanguageSwitcher from '../components/LanguageSwitcher/LanguageSwitcher';
 
 const styles = {
   container: {
@@ -83,10 +85,14 @@ const styles = {
 
 export default function Home() {
   const mandals = getAllMandals();
+  const { getLocalized } = useLanguage();
 
   return (
     <div style={styles.container}>
       <div style={styles.inner}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--space-md)' }}>
+          <LanguageSwitcher />
+        </div>
         <p style={styles.eyebrow}>E-PavtiBook</p>
         <h1 style={styles.title}>
           Every Mandal Deserves Its Own Digital Home
@@ -112,9 +118,9 @@ export default function Home() {
                 e.currentTarget.style.borderColor = 'var(--color-border-soft)';
               }}
             >
-              <p style={styles.mandalName}>{mandal.name}</p>
-              <p style={styles.mandalNameMarathi}>{mandal.nameMarathi}</p>
-              <p style={styles.mandalCity}>{mandal.city}</p>
+              <p style={styles.mandalName}>{getLocalized(mandal.name)}</p>
+              <p style={styles.mandalNameMarathi}>{typeof mandal.name === 'object' ? mandal.name.mr : mandal.nameMarathi}</p>
+              <p style={styles.mandalCity}>{getLocalized(mandal.city)}</p>
             </Link>
           ))}
         </div>

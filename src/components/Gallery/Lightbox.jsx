@@ -1,5 +1,6 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { useScrollLock } from '../../hooks/useScrollLock';
+import { useLanguage } from '../../hooks/useLanguage';
 
 export default function Lightbox({ images, currentIndex, onClose, onNavigate }) {
   const { lockScroll, unlockScroll } = useScrollLock();
@@ -44,6 +45,8 @@ export default function Lightbox({ images, currentIndex, onClose, onNavigate }) 
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < images.length - 1;
 
+  const { getLocalized } = useLanguage();
+
   return (
     <div
       className={`lightbox ${isOpen ? 'lightbox--open' : ''}`}
@@ -87,7 +90,7 @@ export default function Lightbox({ images, currentIndex, onClose, onNavigate }) 
           <img
             className="lightbox__image"
             src={currentImage.src}
-            alt={currentImage.alt}
+            alt={getLocalized(currentImage.alt)}
           />
         </div>
       )}
@@ -110,7 +113,7 @@ export default function Lightbox({ images, currentIndex, onClose, onNavigate }) 
       {currentImage && (
         <div className="lightbox__footer">
           {currentImage.caption && (
-            <p className="lightbox__caption-text">{currentImage.caption}</p>
+            <p className="lightbox__caption-text">{getLocalized(currentImage.caption)}</p>
           )}
           <p className="lightbox__counter">
             {currentIndex + 1} / {images.length}

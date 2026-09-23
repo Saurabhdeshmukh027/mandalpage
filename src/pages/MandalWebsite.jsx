@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getMandal } from '../data/mandals';
 import { MandalProvider } from '../context/MandalContext';
+import { useLanguage } from '../hooks/useLanguage';
 import { formatDateRange } from '../utils/dateUtils';
 import MandalNotFound from './MandalNotFound';
 
@@ -19,20 +20,26 @@ import Footer from '../components/Footer/Footer';
 export default function MandalWebsite() {
   const { slug } = useParams();
   const mandal = getMandal(slug);
+  const { getLocalized, language } = useLanguage();
 
-  // Dynamic page title and meta
+  // Dynamic page title and meta reactive to language change
   useEffect(() => {
     if (mandal) {
       const { identity, festival, location } = mandal;
+      const mandalName = getLocalized(identity.name);
+      const festivalName = getLocalized(festival.name);
+      const venue = getLocalized(location.venue);
+      const address = getLocalized(location.address);
+      const tagline = getLocalized(identity.tagline);
       const dateRange = formatDateRange(festival.startDate, festival.endDate);
 
-      document.title = `${identity.name} | ${festival.name}`;
+      document.title = `${mandalName} | ${festivalName}`;
 
       // Update meta description
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute('content',
-          `${identity.name} (${identity.nameMarathi}) — ${festival.name} celebration at ${location.venue}, ${location.address}. ${dateRange}. ${identity.tagline}`
+          `${mandalName} — ${festivalName} celebration at ${venue}, ${address}. ${dateRange}. ${tagline}`
         );
       }
 
@@ -47,8 +54,8 @@ export default function MandalWebsite() {
         meta.setAttribute('content', content);
       };
 
-      setMeta('og:title', `${identity.name} | ${festival.name}`);
-      setMeta('og:description', `${identity.tagline}. ${festival.name} — ${dateRange} at ${location.venue}, ${location.address}.`);
+      setMeta('og:title', `${mandalName} | ${festivalName}`);
+      setMeta('og:description', `${tagline}. ${festivalName} — ${dateRange} at ${venue}, ${address}.`);
       if (identity.heroImageUrl) {
         setMeta('og:image', identity.heroImageUrl);
       }
@@ -56,9 +63,9 @@ export default function MandalWebsite() {
     }
 
     return () => {
-      document.title = 'E-PavtiBook — Your Mandal\'s Digital Home';
+      document.title = "E-PavtiBook — Your Mandal's Digital Home";
     };
-  }, [mandal]);
+  }, [mandal, language, getLocalized]);
 
   if (!mandal) {
     return <MandalNotFound slug={slug} />;
