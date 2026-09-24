@@ -1,23 +1,42 @@
 import { useMandal } from '../../context/MandalContext';
 import { useLanguage } from '../../hooks/useLanguage';
-import { formatDateRange } from '../../utils/dateUtils';
+import { formatDateRange, getTodaySchedule } from '../../utils/dateUtils';
 import './Hero.css';
 
 export default function Hero() {
-  const { identity, festival, location } = useMandal();
-  const { t, getLocalized, language } = useLanguage();
+  const { identity, devi, festival, location, schedule, sponsors } = useMandal();
+  const { t, getLocalized } = useLanguage();
 
-  const dateRange = formatDateRange(festival.startDate, festival.endDate);
   const mandalName = getLocalized(identity.name);
-  const festivalName = getLocalized(festival.name);
-  const address = getLocalized(location.address);
-  const venue = getLocalized(location.venue);
   const tagline = getLocalized(identity.tagline);
+  const festivalName = getLocalized(festival.name);
+  const dateRange = formatDateRange(festival.startDate, festival.endDate);
 
-  // Subtitle in alternating script for cultural richness
-  const secondaryName = language === 'en'
-    ? (typeof identity.name === 'object' ? identity.name.mr : identity.nameMarathi)
-    : (typeof identity.name === 'object' ? identity.name.en : identity.name);
+  // Address and location resolution
+  const address = getLocalized(location.address);
+  const city = getLocalized(location.city);
+  const venue = getLocalized(location.venue);
+  const locationDisplay = address && city
+    ? `${address}, ${city}`
+    : (address || venue || '');
+
+  // Mandal initials for emblem fallback
+  const initials = mandalName ? mandalName.slice(0, 2) : 'मं';
+
+  // Hero visual resolution: Devi image OR Mandal-provided hero image OR festival cover image
+  const heroImage = devi?.imageUrl || identity?.heroImageUrl || festival?.coverImageUrl || null;
+
+  // Presenting sponsor resolution (only tier = 'presenting')
+  const presentingSponsor = sponsors?.find(s => s.tier === 'presenting');
+  const presentingSponsorName = presentingSponsor ? getLocalized(presentingSponsor.name) : '';
+  const presentingSponsorInitials = presentingSponsor?.initials || (presentingSponsorName ? presentingSponsorName.slice(0, 2) : 'SP');
+
+  // Today's event preview resolution
+  const todaySchedule = getTodaySchedule(schedule);
+  const todayEvent = todaySchedule?.events?.find(e => e.eventType === 'Aarti' || (typeof e.title === 'object' && e.title?.en?.toLowerCase().includes('aarti'))) || todaySchedule?.events?.[0];
+  const todayEventTitle = todayEvent ? getLocalized(todayEvent.title) : '';
+  const todayEventTime = todayEvent?.time || todayEvent?.startTime || '';
+  const todayEventVenue = todayEvent ? (getLocalized(todayEvent.venue) || venue) : '';
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -28,75 +47,192 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="hero" aria-label="Hero">
-      {/* Hero Image */}
-      <div className="hero__image-wrapper">
-        {identity.heroImageUrl && (
-          <img
-            className="hero__image"
-            src={identity.heroImageUrl}
-            alt={`${mandalName} — ${festivalName}`}
-            loading="eager"
-            fetchPriority="high"
-          />
-        )}
-        <div className="hero__overlay" aria-hidden="true" />
+    <header id="home" className="hero" aria-label={mandalName}>
+      {/* Anchor alias for #hero backward compatibility */}
+      <span id="hero" className="hero__anchor" aria-hidden="true" />
+
+      {/* Ambient background glow */}
+      <div className="hero__ambient" aria-hidden="true">
+        <div className="hero__ambient-glow hero__ambient-glow--1" />
+        <div className="hero__ambient-glow hero__ambient-glow--2" />
+        <div className="hero__ambient-pattern" />
       </div>
 
-      {/* Content */}
-      <div className="hero__content">
-        <p className="hero__eyebrow">{festivalName}</p>
+      <div className="hero__container">
+        <div className="hero__layout">
+          {/* Identity & Main Content */}
+          <div className="hero__content">
+            {/* 1. Mandal Logo */}
+            <div className="hero__logo-wrapper">
+              {identity.logoUrl ? (
+                <img
+                  src={identity.logoUrl}
+                  alt={`${mandalName} Logo`}
+                  className="hero__logo-img"
+                  width="56"
+                  height="56"
+                />
+              ) : (
+                <div className="hero__logo-emblem" aria-hidden="true">
+                  <span className="hero__logo-emblem-text">{initials}</span>
+                </div>
+              )}
+            </div>
 
-        <h1 className="hero__title">
-          {mandalName.split(' ').reduce((acc, word, i, arr) => {
-            // Put "Utsav Mandal" on its own line if present
-            if ((word === 'Utsav' || word === 'उत्सव') && i < arr.length - 1) {
-              return [...acc, <br key={i} />, word, ' '];
-            }
-            return [...acc, word, i < arr.length - 1 ? ' ' : ''];
-          }, [])}
-        </h1>
+            {/* 2. Mandal Name (h1 only once on page) */}
+            <h1 className="hero__title">
+              {mandalName}
+            </h1>
 
-        {secondaryName && (
-          <p className="hero__title-marathi">{secondaryName}</p>
-        )}
+            {/* 3. Tagline */}
+            {tagline && (
+              <p className="hero__tagline">
+                {tagline}
+              </p>
+            )}
 
-        <p className="hero__location">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px' }}>
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          {address}
-        </p>
+            {/* 4 & 5. Festival Name & Dates */}
+            <div className="hero__festival-row">
+              <span className="hero__festival-name">{festivalName}</span>
+              <span className="hero__festival-dot" aria-hidden="true">•</span>
+              <span className="hero__festival-dates">{dateRange}</span>
+            </div>
 
-        <p className="hero__dates">{dateRange}</p>
+            {/* 6. Location */}
+            {locationDisplay && (
+              <p className="hero__location">
+                <svg
+                  className="hero__location-icon"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span>{locationDisplay}</span>
+              </p>
+            )}
 
-        <p className="hero__venue">{venue}</p>
+            {/* 7. CTAs */}
+            <div className="hero__actions">
+              <a
+                href="#schedule"
+                className="btn btn--hero"
+                onClick={(e) => handleNavClick(e, '#schedule')}
+              >
+                {t('viewSchedule')}
+              </a>
+              <a
+                href="#location"
+                className="btn btn--hero-outline"
+                onClick={(e) => handleNavClick(e, '#location')}
+              >
+                {t('visitMandal')}
+              </a>
+            </div>
 
-        <p className="hero__tagline">{tagline}</p>
+            {/* Optional Presenting Sponsor (Mandal > Festival > Sponsor) */}
+            {presentingSponsor && (
+              <div
+                className="hero__sponsor"
+                aria-label={`${t('presentingPartner')}: ${presentingSponsorName}`}
+              >
+                <span className="hero__sponsor-label">{t('presentingPartner')}</span>
+                <div className="hero__sponsor-body">
+                  {presentingSponsor.logoUrl ? (
+                    <img
+                      src={presentingSponsor.logoUrl}
+                      alt=""
+                      className="hero__sponsor-logo"
+                      width="28"
+                      height="28"
+                    />
+                  ) : (
+                    <span className="hero__sponsor-initials" aria-hidden="true">
+                      {presentingSponsorInitials}
+                    </span>
+                  )}
+                  <span className="hero__sponsor-name">{presentingSponsorName}</span>
+                </div>
+              </div>
+            )}
+          </div>
 
-        <div className="hero__actions">
-          <a
-            href="#schedule"
-            className="btn btn--hero"
-            onClick={(e) => handleNavClick(e, '#schedule')}
-          >
-            {t('exploreSchedule')}
-          </a>
-          <a
-            href="#location"
-            className="btn btn--hero-outline"
-            onClick={(e) => handleNavClick(e, '#location')}
-          >
-            {t('viewLocation')}
-          </a>
+          {/* 8. Hero / Devi Visual */}
+          <div className="hero__visual">
+            <div className="hero__visual-frame">
+              {heroImage ? (
+                <>
+                  <img
+                    className="hero__visual-image"
+                    src={heroImage}
+                    alt={`${mandalName} — ${festivalName}`}
+                    loading="eager"
+                    fetchPriority="high"
+                  />
+                  <div className="hero__visual-overlay" aria-hidden="true" />
+                </>
+              ) : (
+                <div className="hero__visual-fallback" aria-hidden="true">
+                  <div className="hero__fallback-mandala" />
+                  <span className="hero__fallback-symbol">{initials}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="hero__scroll" aria-hidden="true">
-        <span className="hero__scroll-line" />
+        {/* 9. Today's Event Preview Strip */}
+        {todaySchedule && todayEvent && (
+          <div className="hero__today-container">
+            <a
+              href="#today"
+              className="hero__today-strip"
+              onClick={(e) => handleNavClick(e, '#today')}
+              aria-label={`${t('todayBadge')}: ${todayEventTitle} ${todayEventTime ? `at ${todayEventTime}` : ''} ${todayEventVenue ? `at ${todayEventVenue}` : ''}`}
+            >
+              <span className="hero__today-badge">{t('todayBadge')}</span>
+              <div className="hero__today-info">
+                <span className="hero__today-title">{todayEventTitle}</span>
+                {todayEventTime && (
+                  <>
+                    <span className="hero__today-dot" aria-hidden="true">•</span>
+                    <span className="hero__today-time">{todayEventTime}</span>
+                  </>
+                )}
+                {todayEventVenue && (
+                  <>
+                    <span className="hero__today-dot" aria-hidden="true">•</span>
+                    <span className="hero__today-venue">{todayEventVenue}</span>
+                  </>
+                )}
+              </div>
+              <svg
+                className="hero__today-arrow"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        )}
       </div>
-    </section>
+    </header>
   );
 }

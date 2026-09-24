@@ -9,10 +9,17 @@ import MandalNotFound from './MandalNotFound';
 import Navbar from '../components/Navbar/Navbar';
 import Hero from '../components/Hero/Hero';
 import TodaysEvent from '../components/TodaysEvent/TodaysEvent';
+import LatestUpdates from '../components/LatestUpdates/LatestUpdates';
+import FestivalOverview from '../components/FestivalOverview/FestivalOverview';
 import Schedule from '../components/Schedule/Schedule';
+import DailyDressCode from '../components/DailyDressCode/DailyDressCode';
+import Bhandara from '../components/Bhandara/Bhandara';
+import Competitions from '../components/Competitions/Competitions';
+import Visarjan from '../components/Visarjan/Visarjan';
 import AboutMandal from '../components/AboutMandal/AboutMandal';
 import Sponsors from '../components/Sponsors/Sponsors';
 import Gallery from '../components/Gallery/Gallery';
+import SupportMandal from '../components/SupportMandal/SupportMandal';
 import Location from '../components/Location/Location';
 import ShareMandal from '../components/ShareMandal/ShareMandal';
 import Footer from '../components/Footer/Footer';
@@ -77,10 +84,17 @@ export default function MandalWebsite() {
       <main>
         <Hero />
         <TodaysEvent />
+        <LatestUpdates />
+        <FestivalOverview />
         <Schedule />
+        <DailyDressCode />
+        <Bhandara />
+        <Competitions />
+        <Visarjan />
         <AboutMandal />
-        <Sponsors />
         <Gallery />
+        <Sponsors />
+        <SupportMandal />
         <Location />
         <ShareMandal />
       </main>

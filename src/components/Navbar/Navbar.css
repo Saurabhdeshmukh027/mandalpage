@@ -80,11 +80,19 @@
   backdrop-filter: none;
 }
 
+.navbar__brand-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
 /* Desktop Nav */
 .navbar__links {
   display: none;
   align-items: center;
-  gap: var(--space-xl);
+  gap: clamp(0.6rem, 1.2vw, 1.25rem);
   list-style: none;
 }
 
@@ -130,7 +138,7 @@
   z-index: calc(var(--z-overlay) + 1);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .navbar__links {
     display: flex;
   }

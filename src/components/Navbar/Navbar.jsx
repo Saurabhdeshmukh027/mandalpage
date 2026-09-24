@@ -6,7 +6,7 @@ import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Navbar.css';
 
 export default function Navbar() {
-  const { identity } = useMandal();
+  const { identity, bhandara, competitions, visarjan, donation } = useMandal();
   const { t, getLocalized } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,11 +16,16 @@ export default function Navbar() {
 
   // Dynamic nav items based on active language
   const navItems = [
+    { label: t('home'), href: '#home' },
+    { label: t('festival'), href: '#festival' },
     { label: t('schedule'), href: '#schedule' },
-    { label: t('ourStory'), href: '#about' },
-    { label: t('sponsors'), href: '#sponsors' },
+    ...(bhandara ? [{ label: t('food') || 'Mahaprasad', href: '#bhandara' }] : []),
+    ...(competitions && competitions.length > 0 ? [{ label: t('activities') || 'Activities', href: '#activities' }] : []),
+    ...(visarjan ? [{ label: t('visarjan') || 'Visarjan', href: '#visarjan' }] : []),
+    { label: t('ourStory'), href: '#story' },
     { label: t('gallery'), href: '#gallery' },
-    { label: t('location'), href: '#location' },
+    { label: t('sponsors'), href: '#sponsors' },
+    ...(donation && donation.enabled !== false ? [{ label: t('support'), href: '#support' }] : []),
   ];
 
   // Scroll detection
@@ -96,8 +101,12 @@ export default function Navbar() {
     <nav className={navClass} role="navigation" aria-label="Main navigation">
       <div className="navbar__inner">
         {/* Brand */}
-        <a href="#hero" className="navbar__brand" onClick={(e) => handleNavClick(e, '#hero')}>
-          <span className="navbar__brand-icon" aria-hidden="true">{initials}</span>
+        <a href="#home" className="navbar__brand" onClick={(e) => handleNavClick(e, '#home')}>
+          {identity.logoUrl ? (
+            <img src={identity.logoUrl} alt="" className="navbar__brand-img" />
+          ) : (
+            <span className="navbar__brand-icon" aria-hidden="true">{initials}</span>
+          )}
           <span className="navbar__brand-name">{mandalName}</span>
         </a>
 
@@ -120,11 +129,11 @@ export default function Navbar() {
         <div className="navbar__actions">
           <LanguageSwitcher isHero={!scrolled} />
           <a
-            href="#share"
+            href="#support"
             className="navbar__cta btn btn--primary btn--sm"
-            onClick={(e) => handleNavClick(e, '#share')}
+            onClick={(e) => handleNavClick(e, '#support')}
           >
-            {t('share')}
+            {t('support')}
           </a>
         </div>
 
@@ -171,12 +180,12 @@ export default function Navbar() {
         </ul>
         <div className="navbar__mobile-cta">
           <a
-            href="#share"
+            href="#support"
             className="btn btn--primary"
-            onClick={(e) => handleNavClick(e, '#share')}
+            onClick={(e) => handleNavClick(e, '#support')}
             tabIndex={menuOpen ? 0 : -1}
           >
-            {t('share')}
+            {t('support')}
           </a>
         </div>
       </div>

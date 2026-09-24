@@ -85,19 +85,19 @@ export function LanguageProvider({ children, initialLanguage }) {
    * @returns {string}
    */
   const getLocalized = useCallback((value, fallbackValue = '') => {
-    if (!value) return fallbackValue;
+    if (!value) return fallbackValue || '';
     if (typeof value === 'string') return value;
     if (typeof value === 'object') {
-      // Direct language match
+      // 1. Direct selected language match
       if (value[language]) return value[language];
-      // Fallback to Marathi
+      // 2. Fallback to Marathi
       if (value.mr) return value.mr;
-      // Fallback to Hindi
-      if (value.hi) return value.hi;
-      // Fallback to English
+      // 3. Fallback to English
       if (value.en) return value.en;
+      // 4. Empty string / fallback value
+      return fallbackValue || '';
     }
-    return fallbackValue;
+    return fallbackValue || '';
   }, [language]);
 
   const currentLanguage = SUPPORTED_LANGUAGES.find(l => l.code === language) || SUPPORTED_LANGUAGES[0];

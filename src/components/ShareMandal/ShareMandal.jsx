@@ -39,7 +39,7 @@ export default function ShareMandal() {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
-    } catch (err) {
+    } catch {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = shareUrl;
